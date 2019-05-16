@@ -4,6 +4,7 @@ import ricm3.gpi.gui.Color;
 import ricm3.gpi.gui.Graphics;
 import ricm3.gpi.gui.Window;
 
+
 /**
  * This is a component within a tree of containers and components.
  * Each component has a surface, defined by its bounds, within
@@ -37,11 +38,24 @@ public class Component {
   protected Color m_fgColor; // foreground color for this component
   
   protected Component() {
-    throw new Error("Not Yet Implemented");
+    this.m_bgColor = Color.white;
+    this.m_fgColor = Color.black;
+    this.m_x = 0;
+    this.m_y = 0;
+    this.m_width = 0;
+    this.m_height = 0;
+    this.m_parent = null;
   }
 
   public Component(Container parent) {
-    throw new Error("Not Yet Implemented");
+	  this.m_bgColor = Color.white;
+	    this.m_fgColor = Color.black;
+	    this.m_x = 0;
+	    this.m_y = 0;
+	    this.m_width = 0;
+	    this.m_height = 0;
+	    this.m_parent = parent;
+	    this.m_parent.Children.add(this);
   }
 
   public String toString() {
@@ -78,7 +92,11 @@ public class Component {
    * @param l
    */
   public void toLocal(Location l) {
-    throw new Error("Not Yet Implemented");
+	  Component tmp = this;
+	    while(tmp.m_parent != null) {
+	    	l.translate(-tmp.m_x, -tmp.m_y); 
+	    	tmp = tmp.m_parent;
+	    }
   }
 
   /**
@@ -87,7 +105,12 @@ public class Component {
    * @param l
    */
   public void toGlobal(Location l) {
-    throw new Error("Not Yet Implemented");
+	  Component tmp = this;
+	    while(tmp.m_parent != null) {
+	    	l.translate(tmp.m_x, tmp.m_y); 
+	    	tmp = tmp.m_parent;
+	    }
+
   }
 
   public Component parent() {
@@ -95,7 +118,12 @@ public class Component {
   }
 
   public void remove() {
-    throw new Error("Not Yet Implemented");
+	  if(this.m_parent == null) {
+			throw new IllegalStateException();
+		}
+	this.m_parent.Children.remove(this);
+  this.m_parent = null;
+  
   }
 
   public Location location() {
@@ -164,7 +192,11 @@ public class Component {
    * @return
    */
   public boolean inside(int x, int y) {
-    throw new Error("Not Yet Implemented");
+	  Location l = new Location(x,y);
+	  toLocal(l);
+	  if( (l.x()>=0 && l.y()>=0)&&(l.x() <=this.width()) &&  (l.y() <=this.height()))
+		    return true;
+		  else return false;
   }
 
   /**
@@ -175,7 +207,8 @@ public class Component {
    * @return
    */
   public Component select(int x, int y) {
-    throw new Error("Not Yet Implemented");
+	  if(inside(x,y)) return this;
+	  else return null;
   }
 
   /**
@@ -187,7 +220,9 @@ public class Component {
    */
   public void paint(Graphics g) {
     g.setColor(m_bgColor);
-    g.fillRect(0, 0, m_width, m_height);
+    Location loc = new Location(0,0);
+    toGlobal(loc);
+    g.fillRect(loc.x(), loc.y(), m_width, m_height);
   }
 
   /**

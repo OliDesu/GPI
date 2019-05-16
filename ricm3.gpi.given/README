@@ -264,7 +264,7 @@ D) Draw Canvas
 This is the last task for this step, with an emphasis on
 using your toolkit, rather than coding it.
 
-The goal is to write a small application that will allow
+The goal > will allow
 you to draw lines on the screen. Look at the
 class "DrawCanvasSample" and the class "DrawCanvas",
 everything you need is explained in the source code.

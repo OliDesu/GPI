@@ -15,6 +15,7 @@ import ricm3.gpi.gui.Window;
 public class Root extends Container implements MouseListener, KeyListener, WindowListener {
 
   Window m_window;
+  Component m_selected;
 
   public Root(Window w) {
     super();
@@ -33,7 +34,7 @@ public class Root extends Container implements MouseListener, KeyListener, Windo
    *         under the last know mouse position
    */
   public Component selected() {
-    throw new Error("Not Yet Implemented");
+   return m_selected;
   }
 
   @Override
@@ -50,7 +51,9 @@ public class Root extends Container implements MouseListener, KeyListener, Windo
    */
   @Override
   public void keyPressed(char k, int code) {
-    throw new Error("Not Yet Implemented");
+	  if(this.m_selected != null && this.m_selected.m_kl != null){
+		  m_selected.m_kl.keyPressed(k, code);
+	    }
   }
 
   /**
@@ -61,7 +64,9 @@ public class Root extends Container implements MouseListener, KeyListener, Windo
    */
   @Override
   public void keyReleased(char k, int code) {
-    throw new Error("Not Yet Implemented");
+	  if(this.m_selected != null && this.m_selected.m_kl != null) {
+	    	m_selected.m_kl.keyReleased(k, code);
+	    }
   }
 
   /**
@@ -80,7 +85,14 @@ public class Root extends Container implements MouseListener, KeyListener, Windo
   public void mouseMoved(int x, int y) {
     Component c;
     c = select(x, y);
-    throw new Error("Not Yet Implemented");
+    if( c.m_ml != null && c != this.m_selected  && this.m_selected != null && this.m_selected.m_ml != null) {
+    	m_selected.m_ml.mouseExited();
+    	c.m_ml.mouseEntered(x, y);
+    }
+    this.m_selected = c;
+    if(this.m_selected != null && this.m_selected.m_ml != null ) {
+    	m_selected.m_ml.mouseMoved(x, y);
+    }
   }
 
   /**
@@ -99,7 +111,9 @@ public class Root extends Container implements MouseListener, KeyListener, Windo
   public void mousePressed(int x, int y, int buttons) {
     Component c;
     c = select(x, y);
-    throw new Error("Not Yet Implemented");
+    if(this.m_selected != null && this.m_selected.m_ml != null) {
+    	c.m_ml.mousePressed(x, y, buttons);
+    }
   }
 
   /**
@@ -118,7 +132,10 @@ public class Root extends Container implements MouseListener, KeyListener, Windo
   public void mouseReleased(int x, int y, int buttons) {
     Component c;
     c = select(x, y);
-    throw new Error("Not Yet Implemented");
+    if(this.m_selected != null && this.m_selected.m_ml != null) {
+    	c.m_ml.mouseReleased(x, y, buttons);
+    	
+    }
   }
 
   /**
@@ -133,7 +150,10 @@ public class Root extends Container implements MouseListener, KeyListener, Windo
   public void mouseEntered(int x, int y) {
     Component c;
     c = select(x, y);
-    throw new Error("Not Yet Implemented");
+    if(this.m_selected != null && this.m_selected.m_ml != null) {
+    	c.m_ml.mouseEntered(x, y);
+    }
+
   }
 
   /**
@@ -144,7 +164,9 @@ public class Root extends Container implements MouseListener, KeyListener, Windo
    */
   @Override
   public void mouseExited() {
-    throw new Error("Not Yet Implemented");
+    if(this.m_selected != null && this.m_selected.m_ml != null) {
+    	this.m_selected.m_ml.mouseExited();
+    }
   }
 
 }

@@ -1,0 +1,4 @@
+*.jar
+.metadata
+.recommenders
+ricm3.gpi

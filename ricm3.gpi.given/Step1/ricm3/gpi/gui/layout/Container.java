@@ -1,6 +1,10 @@
 package ricm3.gpi.gui.layout;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import ricm3.gpi.gui.Graphics;
+
+
 
 /**
  * This is a container within a tree of containers and components.
@@ -10,14 +14,15 @@ import ricm3.gpi.gui.Graphics;
  * @author Pr. Olivier Gruber (olivier dot gruber at acm dot org)
  */
 public class Container extends Component {
-  
+  LinkedList<Component> Children;
   Container() {
-    throw new Error("Not Yet Implemented");
+    super();
+    this.Children = new LinkedList<Component>();
   }
 
   public Container(Container parent) {
     super(parent);
-    throw new Error("Not Yet Implemented");
+    this.Children = new LinkedList<Component>();
   }
 
   /**
@@ -25,7 +30,7 @@ public class Container extends Component {
    *         children to this container
    */
   public int childrenCount() {
-    throw new Error("Not Yet Implemented");
+    return this.Children.size();
   }
 
   /**
@@ -33,7 +38,8 @@ public class Container extends Component {
    *         index.
    */
   public Component childrenAt(int i) {
-    throw new Error("Not Yet Implemented");
+	  Object[] retour = this.Children.toArray();
+		return (Component) retour[i];
   }
 
 
@@ -46,8 +52,22 @@ public class Container extends Component {
    * @return this selected component 
    */
   public Component select(int x, int y) {
-    throw new Error("Not Yet Implemented");
-  }
+	  Component tmp;
+
+		if(inside(x,y)) {
+			Component compRes = this;
+			Iterator<Component> iter =this.Children.listIterator();
+			while(iter.hasNext()) {
+				tmp = iter.next();
+				if(tmp.inside(x, y)) {
+					compRes = tmp.select(x, y);
+				}
+			}
+			return compRes;
+		}
+		else return null;
+	}
+  
 
   /**
    * Painting a container is a two-step process
@@ -57,7 +77,13 @@ public class Container extends Component {
    */
   public void paint(Graphics g) {
     super.paint(g);
-    throw new Error("Not Yet Implemented");
+    Iterator <Component> iter = this.Children.listIterator();
+    Component tmp;
+    while(iter.hasNext()) {
+    	tmp = iter.next();
+    	tmp.paint(g);
+    	
+    }
   }
   
 }

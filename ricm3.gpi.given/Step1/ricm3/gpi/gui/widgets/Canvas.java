@@ -23,10 +23,6 @@ public class Canvas extends Component {
     super(parent);
   }
   
-  @Override
-  public void paint(Graphics g) {
-    g.setColor(m_bgColor);
-    g.fillRect(0, 0, m_width, m_height);
-  }
+
 
 }
